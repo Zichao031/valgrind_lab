@@ -3,7 +3,7 @@
 
 class Person{
     private:
-        char *name;
+        const char *name; // add const
         Person *father; // pointer to the father
         Person *mother; // pointer to the mother
         Person **children; // array of pointers to the kids

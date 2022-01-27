@@ -12,6 +12,9 @@ PersonList::PersonList(){
 }
 
 PersonList::~PersonList(){
+    for (int i=0; i < numPeople; i++) {
+        delete theList[i];
+    }
     delete [] theList;
 }
 
@@ -42,13 +45,19 @@ void PersonList::addPerson(const char* child_name, const char* father_name, cons
       insertIntoList(mother);
     }
     Person *newChild = new Person(child_name, father, mother);
+    //Person* temp = newChild;
     insertIntoList(newChild);
     father->addChild(newChild);
     mother->addChild(newChild);
+    //delete[] temp;
 }
 
 void PersonList::insertIntoList(Person *newPerson){
-    if(numPeople == capacity) expand(&theList, &capacity);
+    if(numPeople == capacity) {
+        Person** temp = theList; ///
+        expand(&theList, &capacity);
+        delete[] temp; //delete temp
+    }
 
     theList[numPeople++] = newPerson;
 }
