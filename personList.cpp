@@ -12,13 +12,16 @@ PersonList::PersonList(){
 }
 
 PersonList::~PersonList(){
+    for (int i = 0; i < numPeople; i++) {
+        delete theList[i];
+    }
     delete [] theList;
 }
 
 void PersonList::addPerson(const char* child_name, const char* father_name, const char* mother_name){
     Person *father = 0;
     Person *mother = 0;
-    
+    Person *newChild = 0;
     // try to find the three names in the theList
     for(int i = 0; i < numPeople; i++){
         if(!strcmp(theList[i]->getName(), child_name)){
@@ -41,14 +44,18 @@ void PersonList::addPerson(const char* child_name, const char* father_name, cons
       mother = new Person(mother_name, 0, 0);
       insertIntoList(mother);
     }
-    Person *newChild = new Person(child_name, father, mother);
+    newChild = new Person(child_name, father, mother);
     insertIntoList(newChild);
     father->addChild(newChild);
     mother->addChild(newChild);
 }
 
 void PersonList::insertIntoList(Person *newPerson){
-    if(numPeople == capacity) expand(&theList, &capacity);
+    if (numPeople == capacity) {
+        Person** tmpList = theList;
+        expand(&theList, &capacity);
+        delete[] tmpList;
+    }
 
     theList[numPeople++] = newPerson;
 }
