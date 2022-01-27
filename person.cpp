@@ -6,7 +6,7 @@ using std::cout;
 using std::endl;
 
 Person::Person(const char *name_, Person* father_, Person* mother_){
-    name = name_;
+    name = name_; //Changed
     father = father_;
     mother = mother_;
     capacity = 1;
@@ -15,12 +15,12 @@ Person::Person(const char *name_, Person* father_, Person* mother_){
 }
 
 Person::~Person(){
-    delete[] children;
+    delete[] children; // changed delete to delete[]
 }
 
 void Person::addChild(Person *newChild){
     if(numChildren == capacity) {
-	Person** tmpChildren = children;
+	Person** tmpChildren = children; // delete origin children after expand
 	expand(&children, &capacity);
 	delete[] tmpChildren;
     }
@@ -55,7 +55,7 @@ void Person::printLineage(char dir, int level){
             father->printLineage(dir, level + 1);
         }
     }
-   delete[] temp;
+   delete[] temp; // delete new pointer from compute_relation
 }
 
 /* helper function to compute the lineage
@@ -70,7 +70,7 @@ char* Person::compute_relation(int level){
     for(int i = 2; i <= level; i++){
         char *temp2 = new char[strlen("great ") + strlen(temp) + 1];
         strcat(strcpy(temp2, "great "), temp);
-	delete[] temp;
+	delete[] temp; // delete origin temp
         temp = temp2;
     }
     return temp;
