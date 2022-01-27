@@ -8,11 +8,11 @@ using std::endl;
 Person::Person(const char *name_, Person* father_, Person* mother_){
     name = new char[strlen(name_)];
     strcpy(name, name_);
-    father = father_;
-    mother = mother_;
-    capacity = 1;
-    numChildren = 0;
-    children = new Person*[capacity];
+    this->father = father_;
+    this->mother = mother_;
+    this->capacity = 1;
+    this->numChildren = 0;
+    this->children = new Person*[capacity];
 }
 
 Person::~Person(){
@@ -20,8 +20,8 @@ Person::~Person(){
 }
 
 void Person::addChild(Person *newChild){
-    if(numChildren == capacity) expand(&children, &capacity);
-    children[numChildren++] = newChild;
+    if(this->numChildren == this->capacity) expand(&this->children, &this->capacity);
+    this->children[this->numChildren++] = newChild;
 }
 
 void Person::printAncestors(){
