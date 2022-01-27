@@ -6,8 +6,8 @@ using std::cout;
 using std::endl;
 
 Person::Person(const char *name_, Person* father_, Person* mother_){
-    name = new char[strlen(name_)];
-    strcpy(name, name_);
+
+    this->name = name_;
     this->father = father_;
     this->mother = mother_;
     this->capacity = 1;
@@ -16,13 +16,18 @@ Person::Person(const char *name_, Person* father_, Person* mother_){
 }
 
 Person::~Person(){
-    delete children;
+    delete[] children; // change to delete[]
 }
 
 void Person::addChild(Person *newChild){
-    if(this->numChildren == this->capacity) expand(&this->children, &this->capacity);
-    this->children[this->numChildren++] = newChild;
+    if(numChildren == capacity) {
+	Person** temp = children; 
+	expand(&children, &capacity);
+	delete[] temp;   // delete temp
+    }
+    children[numChildren++] = newChild;
 }
+
 
 void Person::printAncestors(){
     cout << endl << "Ancestors of " << name << endl;
@@ -52,6 +57,7 @@ void Person::printLineage(char dir, int level){
             father->printLineage(dir, level + 1);
         }
     }
+   delete[] temp; // delete temp
 }
 
 /* helper function to compute the lineage
@@ -66,6 +72,7 @@ char* Person::compute_relation(int level){
     for(int i = 2; i <= level; i++){
         char *temp2 = new char[strlen("great ") + strlen(temp) + 1];
         strcat(strcpy(temp2, "great "), temp);
+        delete[] temp;   // delete temp 
         temp = temp2;
     }
     return temp;
